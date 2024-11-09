@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Control</title>
+    <title>Candle Warmer Control</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,32 +11,56 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #f9f9f9;
+            margin: 0;
         }
         .container {
             text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .container h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 10px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            margin: 15px;
             cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+        button.on {
+            background-color: #ff6f61;
+            color: white;
+        }
+        button.off {
+            background-color: #cccccc;
+            color: white;
+        }
+        button.on:hover {
+            background-color: #e55b50;
+        }
+        button.off:hover {
+            background-color: #b3b3b3;
         }
         #status {
-            margin-top: 20px;
-            font-size: 18px;
+            margin-top: 30px;
+            font-size: 1.5em;
+            color: #555;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Control Pin</h1>
-        <button onclick="setControlPin(1)">Turn On</button>
-        <button onclick="setControlPin(0)">Turn Off</button>
+        <h1>Candle Warmer Control</h1>
+        <button class="on" onclick="setControlPin(1)">Turn On</button>
+        <button class="off" onclick="setControlPin(0)">Turn Off</button>
         <div id="status">Current Status: Unknown</div>
     </div>
 

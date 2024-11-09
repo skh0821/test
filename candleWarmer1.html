@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candle Warmer Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background 0.3s ease;
+            background-color: #f9f9f9; /* 기본 배경색 */
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .container h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            margin: 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+        button.on {
+            background-color: #ff6f61;
+            color: white;
+        }
+        button.off {
+            background-color: #007bff;
+            color: white;
+        }
+        button.on:hover {
+            background-color: #e55b50;
+        }
+        button.off:hover {
+            background-color: #0056b3;
+        }
+        #status {
+            margin-top: 30px;
+            font-size: 1.5em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Candle Warmer Control</h1>
+        <button class="on" onclick="setControlPin(1)">Turn On</button>
+        <button class="off" onclick="setControlPin(0)">Turn Off</button>
+        <div id="status">Current Status: Unknown</div>
+    </div>
+
+    <script>
+        const url = 'https://iot-project-3c0b1-default-rtdb.firebaseio.com/.json';
+
+        // Function to set the control pin
+        function setControlPin(value) {
+            fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ controlPin: value })
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateStatus(value);
+                changeBackground(value);
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Function to update the status text
+        function updateStatus(value) {
+            const statusDiv = document.getElementById('status');
+            if (value === 1) {
+                statusDiv.textContent = 'Current Status: On';
+            } else {
+                statusDiv.textContent = 'Current Status: Off';
+            }
+        }
+
+        // Function to change the background color
+        function changeBackground(value) {
+            if (value === 1) {
+                document.body.style.backgroundColor = 'red';
+            } else {
+                document.body.style.backgroundColor = 'black';
+            }
+        }
+
+        // Function to get the current control pin status
+        function getControlPinStatus() {
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                updateStatus(data.controlPin);
+                changeBackground(data.controlPin);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Get the current status on page load
+        window.onload = getControlPinStatus;
+    </script>
+</body>
+</html>
